@@ -18,7 +18,7 @@ module.exports = klass(function(options) {
   }
 
   if (this.verbose == undefined) {
-    this.verbose = true;
+    this.verbose = false;
   }
 
 }).methods({
@@ -31,20 +31,38 @@ module.exports = klass(function(options) {
     this.coin = undefined;
   },
 
+  parseArgs: function(options, then) {
+    if (typeof options == 'function') {
+      then = options;
+      options = {};
+    }
+    return {then: then, options: options};
+  },
+
   request: function(options, then) {
     var self = this
 
     var url = [this.protocol, '://'];
       
     if (this.coin != undefined) {
-      url.push(this.coin);
+      url.push(this.coin.toLowerCase());
       url.push('.');
+    } else {
+      if (options.coin != undefined) {
+        url.push(options.coin.toLowerCase());
+        url.push('.');
+        delete options.coin;
+      }
     }
 
     url = url.concat([this.host, this.path, '?', querystring.stringify(options)]);
+    url = url.join('');
+    if (self.verbose) {
+      console.log(url);
+    }
 
     request.get({
-      url: url.join('')
+      url: url
     }, function(err, r, body) {
       if (body != undefined) {
         body = JSON.parse(body);
@@ -64,137 +82,166 @@ module.exports = klass(function(options) {
     this.request(options, then);
   },
 
-  getminingandprofitsstatistics: function(then) {
-    var options = {action: 'getminingandprofitsstatistics'};
-    this.get(options, function(err, data) {
-      then(err, data.return);
+  getminingandprofitsstatistics: function(options, then) {
+    var args = this.parseArgs(options, then)
+    args.options.action = 'getminingandprofitsstatistics';
+    
+    this.get(args.options, function(err, data) {
+      args.then(err, data.return);
     }); 
   },
 
-  getautoswitchingandprofitsstatistics: function(then) {
-    var options = {action: 'getautoswitchingandprofitsstatistics'};
-    this.get(options, function(err, data) {
-      then(err, data.return);
+  getautoswitchingandprofitsstatistics: function(options, then) {
+    var args = this.parseArgs(options, then)
+ 
+    args.options.action = 'getautoswitchingandprofitsstatistics';
+    this.get(args.options, function(err, data) {
+      args.then(err, data.return);
     }); 
   },
 
  
-  getuserallbalances: function(then) {
-    var options = {action: 'getuserallbalances'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getuserallbalances: function(options, then) {
+    var args = this.parseArgs(options, then)
+    
+    args.options.action = 'getuserallbalances';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
-  getblockcount: function(then) {
-    var options = {action: 'getblockcount'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getblockcount: function(options, then) {
+    var args = this.parseArgs(options, then)
+ 
+    args.options.action = 'getblockcount';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     }); 
   },
 
-  getblocksfound: function(then) {
-    var options = {action: 'getblocksfound'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getblocksfound: function(options, then) {
+    var args = this.parseArgs(options, then)
+ 
+    args.options.action = 'getblocksfound';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     }); 
   },
 
-  getuserallbalances: function(then) {
-    var options = {action: 'getuserallbalances'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getuserallbalances: function(options, then) {
+    var args = this.parseArgs(options, then)
+ 
+    args.options.action = 'getuserallbalances';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
-  getblockstats: function(then) {
-    var options = {action: 'getblockstats'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getblockstats: function(options, then) {
+    var args = this.parseArgs(options, then)
+ 
+    args.options.action = 'getblockstats';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
   
-  getcurrentworkers: function(then) {
-    var options = {action: 'getcurrentworkers'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getcurrentworkers: function(options, then) {
+    var args = this.parseArgs(options, then)
+    
+    args.options.action = 'getcurrentworkers';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
- getdashboarddata: function(id, then) {
-    var options = {id: id, action: 'getdashboarddata'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getdashboarddata: function(options, then) {
+    args = this.parseArgs(options, then)
+      
+    _.extend(args.options, {action: 'getdashboarddata'});
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
- getdifficulty: function(then) {
-    var options = {action: 'getdifficulty'};
-    this.get(options, function(err, data) {
-      then(err, data);
+ getdifficulty: function(options, then) {
+    var args = this.parseArgs(options, then)
+    _.extend(args.options, {action: 'getdifficulty'});
+ 
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
- getestimatedtime: function(then) {
-    var options = {action: 'getestimatedtime'};
-    this.get(options, function(err, data) {
-      then(err, data);
+ getestimatedtime: function(options, then) {
+    var args = this.parseArgs(options, then);
+    args.options.action = 'getestimatedtime';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
- gethourlyrates: function(then) {
-    var options = {action: 'gethourlyrates'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  gethourlyrates: function(options, then) {
+    var args = this.parseArgs(options, then);
+    args.options.action = 'gethourlyrates';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
- getnavbardata: function(then) {
-    var options = {action: 'getnavbardata'};
+  getnavbardata: function(options, then) {
+    var args = this.parseArgs(options, then);
+    args.options = {action: 'getnavbardata'};
     this.get(options, function(err, data) {
-      then(err, data);
+      args.then(err, data);
     });
   },
 
- getpoolhashrate: function(then) {
-    var options = {action: 'getpoolhashrate'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getpoolhashrate: function(options, then) {
+    var args = this.parseArgs(options, then);
+    args.options.action = 'getpoolhashrate';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
- getpoolinfo: function(then) {
-    var options = {action: 'getpoolinfo'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getpoolinfo: function(options, then) {
+    var args = this.parseArgs(options, then);
+    args.options.action = 'getpoolinfo';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
- getpoolsharerate: function(then) {
-    var options = {action: 'getpoolsharerate'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getpoolsharerate: function(options, then) {
+    var args = this.parseArgs(options, then);
+    args.options.action = 'getpoolsharerate';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
- getpoolstatus: function(then) {
-    var options = {action: 'getpoolstatus'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  getpoolstatus: function(options, then) {
+    var args = this.parseArgs(options, then);
+    args.options.action = 'getpoolstatus';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
- gettimesincelastblock: function(then) {
-    var options = {action: 'gettimesincelastblock'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  gettimesincelastblock: function(options, then) {
+    var args = this.parseArgs(options, then);
+    args.options.action = 'gettimesincelastblock';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
- gettopcontributors: function(then) {
-    var options = {action: 'gettopcontributors'};
-    this.get(options, function(err, data) {
-      then(err, data);
+  gettopcontributors: function(options, then) {
+    var args = this.parseArgs(options, then);
+    args.options.action = 'gettopcontributors';
+    this.get(args.options, function(err, data) {
+      args.then(err, data);
     });
   },
 
