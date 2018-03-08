@@ -4,6 +4,8 @@ miningpoolhub
 
 This is a very simple api client that helps interact with the [miningpoolhub](http://miningpoolhub.com/) mining pool api.  
 
+Here is a list of all the methods that are available with this api.
+[API reference](https://github.com/miningpoolhub/php-mpos/wiki/API-Reference)
 
 Installation
 ------------
