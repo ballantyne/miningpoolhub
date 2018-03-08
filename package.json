@@ -1,0 +1,21 @@
+{
+  "name": "miningpoolhub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Scott Ballantyne",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.6.0",
+    "klass": "^1.4.1",
+    "request": "^2.83.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.0.4"
+  }
+}
