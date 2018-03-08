@@ -23,17 +23,10 @@ var options = {
 var MiningPoolHub = require('miningpoolhub');
 var miningPoolHub = new MiningPoolHub(options);
 
-miningPoolHub.getuserbalances(function(err, data) {
+miningPoolHub.getuserallbalances(function(err, data) {
   console.log(data);
 })
 
-miningPoolHub.getnetworksinfo(function(err, data) {
-  console.log(data);
-})
-
-miningPoolHub.getuserhashrate(function(err, data) {
-  console.log(data);
-})
 
 ```
 
